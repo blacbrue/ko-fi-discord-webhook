@@ -7,6 +7,7 @@ const { Webhook, MessageBuilder } = require('discord-webhook-node');
 const hook = new Webhook(process.env["WEBHOOK_URL"]);
 
 const config = require("./config.json")
+const port = process.env["PORT"] ?? 4001
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,12 +17,16 @@ app.post("/ko-fi", async (req, res) => {
 
     if (data.verification_token != process.env["VERIFICATION_TOKEN"]) return;
 
-    const { verification_token, message_id, timestamp, type, is_public, from_name, message, amount, url, email, currency, is_subscription_payment, is_first_subscription_payment, kofi_transaction_id, tier_name } = JSON.parse(req.body["data"]);
+    const { verification_token, message_id, timestamp, type, is_public, from_name, message, amount, url, email, currency, is_subscription_payment, is_first_subscription_payment, kofi_transaction_id, tier_name, shop_items } = JSON.parse(req.body["data"]);
 
     const date = new Date(timestamp).getTime()
 
     if (config.publicChannel) {
         if (is_public == true) {
+            if (config.devMode) {
+                console.log(data)
+            }
+
             const embed = new MessageBuilder()
                 .setTitle('New Ko-fi Donation!')
                 .addField("Type", type, true)
@@ -39,6 +44,10 @@ app.post("/ko-fi", async (req, res) => {
 
             hook.send(embed);
         } else if (is_public == false) {
+            if (config.devMode) {
+                console.log(data)
+            }
+
             const embed = new MessageBuilder()
                 .setTitle('New Ko-fi Donation!')
                 .addField("Type", type, true)
@@ -57,6 +66,10 @@ app.post("/ko-fi", async (req, res) => {
             hook.send(embed);
         }
     } else {
+        if (config.devMode) {
+            console.log(data)
+        }
+
         const embed = new MessageBuilder()
             .setTitle('New Ko-fi Donation!')
             .addField('Message ID', `||${message_id}||`, true)
@@ -82,4 +95,6 @@ app.post("/ko-fi", async (req, res) => {
     }
 })
 
-app.listen(process.env["PORT"] ? process.env["PORT"] : 4001)
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`)
+})

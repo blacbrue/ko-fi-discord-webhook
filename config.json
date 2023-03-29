@@ -1,3 +1,4 @@
 {
-  "publicChannel": false
+  "publicChannel": false,
+  "devMode": true
 }

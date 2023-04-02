@@ -1,4 +1,5 @@
 {
   "publicChannel": false,
-  "devMode": true
+  "devMode": true,
+  "linkEmbed": false
 }

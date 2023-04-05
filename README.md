@@ -1,6 +1,8 @@
 # Ko-fi & Discord Webhook Integration
 Ko-fi and Discord Webhook API Integration made with [Node.js](https://nodejs.org) and the [`express`](https:///npmjs.org/package/express) library
 
+**=== If there are any problems, please create an issue ===**
+
 `.env` File Template:
 ```
 PORT = 8080
